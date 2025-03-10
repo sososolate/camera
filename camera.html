@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摄像头调用</title>
+</head>
+<body>
+    <h2>手机摄像头调用示例</h2>
+    <video id="video" autoplay style="width: 100%; max-width: 600px;"></video>
+    <script>
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                document.getElementById('video').srcObject = stream;
+            })
+            .catch(function(error) {
+                console.log("摄像头访问失败: ", error);
+            });
+    </script>
+</body>
+</html>
