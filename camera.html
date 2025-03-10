@@ -3,19 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>摄像头调用</title>
+    <title>前置摄像头切换</title>
 </head>
 <body>
-    <h2>手机摄像头调用示例</h2>
+    <h2>前置摄像头切换</h2>
     <video id="video" autoplay style="width: 100%; max-width: 600px;"></video>
+    <button id="startCamera">启用前置摄像头</button>
+    <button id="toggleCamera" disabled>切换摄像头</button>
+
     <script>
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                document.getElementById('video').srcObject = stream;
+        let currentStream = null;
+        let currentFacingMode = "user"; // 默认前置摄像头
+        let videoElement = document.getElementById("video");
+        let startCameraButton = document.getElementById("startCamera");
+        let toggleCameraButton = document.getElementById("toggleCamera");
+
+        function startCamera(facingMode) {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop()); // 关闭当前摄像头
+            }
+
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: facingMode }
             })
-            .catch(function(error) {
+            .then(stream => {
+                currentStream = stream;
+                videoElement.srcObject = stream;
+                toggleCameraButton.disabled = false; // 启用切换按钮
+            })
+            .catch(error => {
                 console.log("摄像头访问失败: ", error);
             });
+        }
+
+        startCameraButton.addEventListener("click", function() {
+            startCamera("user"); // 启用前置摄像头
+        });
+
+        toggleCameraButton.addEventListener("click", function() {
+            currentFacingMode = (currentFacingMode === "user") ? "environment" : "user";
+            startCamera(currentFacingMode); // 切换摄像头
+        });
     </script>
 </body>
 </html>
