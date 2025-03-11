@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>后置摄像头</title>
+    <title>前置摄像头</title>
 </head>
 <body>
-    <h2>后置摄像头</h2>
+    <h2>前置摄像头</h2>
     <video id="video" width="640" height="480" autoplay></video>
 
     <script>
-        // 获取后置摄像头
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        // 获取前置摄像头
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
             .then(function(stream) {
                 document.getElementById('video').srcObject = stream;
             })
             .catch(function(error) {
-                console.log("Error accessing the back camera: " + error);
+                console.log("Error accessing the front camera: " + error);
             });
     </script>
 </body>
